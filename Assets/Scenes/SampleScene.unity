@@ -286,7 +286,7 @@ Transform:
   m_GameObject: {fileID: 272930049}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.58, y: 0, z: -1.13}
+  m_LocalPosition: {x: -2.58, y: 0.131, z: -1.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -404,7 +404,7 @@ Transform:
   m_GameObject: {fileID: 296853039}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.05, y: 0, z: 0.07}
+  m_LocalPosition: {x: 4.23, y: 0.131, z: 0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -885,7 +885,7 @@ Transform:
   m_GameObject: {fileID: 419778807}
   serializedVersion: 2
   m_LocalRotation: {x: 1.110223e-17, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.5, y: -1.5, z: -10.5}
+  m_LocalPosition: {x: 7.5, y: -1.369, z: -10.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -992,7 +992,7 @@ Transform:
   m_GameObject: {fileID: 501424010}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: -0.488, z: 0}
+  m_LocalPosition: {x: 1.5, y: -0.357, z: 0}
   m_LocalScale: {x: 1.1768, y: -0.021510765, z: 1.1768}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1013,6 +1013,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _yOffset: 0.4
   _cutter: {fileID: 646940488}
+  _objReleaseForce: 200
 --- !u!114 &501424016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1070,7 +1071,7 @@ Transform:
   m_GameObject: {fileID: 646940488}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.51, z: 0}
+  m_LocalPosition: {x: 0, y: -15.8, z: -0.3826}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1290,7 +1291,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 1.341, y: 1.1255378, z: -6.8936543}
+  m_LocalPosition: {x: 0, y: 1.2155378, z: -6.8936543}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1430,7 +1431,7 @@ Transform:
   m_GameObject: {fileID: 1115389652}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.09, y: 0.669, z: 1.43}
+  m_LocalPosition: {x: 0.09, y: 0.8, z: 1.43}
   m_LocalScale: {x: 1, y: 2.2699, z: 0.44437718}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1499,7 +1500,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 543450652545099316}
+  m_Follow: {fileID: 543450653359471588}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5
@@ -1528,7 +1529,7 @@ Transform:
   m_GameObject: {fileID: 1894682910}
   serializedVersion: 2
   m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 1.341, y: 1.1255378, z: -6.8936543}
+  m_LocalPosition: {x: 0, y: 1.2155378, z: -6.8936543}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1891,8 +1892,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132149368594782}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.14, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3180,7 +3181,7 @@ GameObject:
   - component: {fileID: 9001081842047189239}
   m_Layer: 0
   m_Name: topHi3
-  m_TagString: Orange
+  m_TagString: Green
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3199,7 +3200,7 @@ GameObject:
   - component: {fileID: 7684986197291065598}
   m_Layer: 0
   m_Name: topHi4
-  m_TagString: Orange
+  m_TagString: Blue
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3692,7 +3693,7 @@ GameObject:
   - component: {fileID: 8747297893940967241}
   m_Layer: 0
   m_Name: topHi2
-  m_TagString: Orange
+  m_TagString: Red
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

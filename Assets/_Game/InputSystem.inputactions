@@ -26,12 +26,21 @@
                 },
                 {
                     "name": "Cut",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "2c22a425-f1b6-4596-9a5e-6cdd060553b6",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ReleaseObj",
+                    "type": "Button",
+                    "id": "5032f5f3-8be6-4462-b1b7-3a3c5850e965",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -65,6 +74,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Cut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e70c4e3-6806-4baa-ad87-43edc44f9f7d",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReleaseObj",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

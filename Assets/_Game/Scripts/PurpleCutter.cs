@@ -8,15 +8,15 @@ public class PurpleCutter : MonoBehaviour
     {
         if(_isCut == false)
         {            
-            string name = other.tag;
-            Debug.Log(name);
+            string name = other.tag;         
 
             if (name == "Purple")
             {
                 other.gameObject.SetActive(false);
             }
 
-           //_isCut = true;
+           _isCut = true;
+            this.gameObject.SetActive(false);
         }
         
     }
