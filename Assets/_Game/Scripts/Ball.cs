@@ -7,15 +7,15 @@ public class Ball : MonoBehaviour
     private float _movementX;
     private float _movementY;
     [SerializeField] float _speed = 10f;
+    [SerializeField] GameObject[] _geos = null;
 
 
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-    }
-
-   
+        
+    }   
 
    void OnMove(InputValue movementValue)
     {

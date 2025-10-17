@@ -2150,6 +2150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 10
+  _geos: []
 --- !u!1 &919132149368594782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2178,7 +2179,7 @@ Rigidbody:
   m_GameObject: {fileID: 919132149368594782}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -2209,6 +2210,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 10
+  _geos:
+  - {fileID: 2687523501107242516}
+  - {fileID: 756084649188970171}
+  - {fileID: 3558430136354726667}
+  - {fileID: 1846421331933775485}
+  - {fileID: 3132322943919899935}
+  - {fileID: 9184107018781199416}
+  - {fileID: 2770275904949389969}
+  - {fileID: 8036633703345775142}
+  - {fileID: 1634892899247189394}
+  - {fileID: 5909535486656768392}
+  - {fileID: 1354987230268798311}
+  - {fileID: 6735289679199398754}
+  - {fileID: 1060345244519369180}
+  - {fileID: 3165267625177241541}
+  - {fileID: 5033315158207026721}
+  - {fileID: 3594286818067442644}
+  - {fileID: 3596225607567297389}
+  - {fileID: 5384685973351854942}
+  - {fileID: 653808271288565657}
 --- !u!114 &919132149368594785
 MonoBehaviour:
   m_ObjectHideFlags: 0
