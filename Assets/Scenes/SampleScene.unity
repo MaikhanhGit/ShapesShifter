@@ -304,6 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebd1a57ecf15999469d10036bc6ff352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _disableAfterCut: 1
 --- !u!1 &296853039
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +405,7 @@ Transform:
   m_GameObject: {fileID: 296853039}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.23, y: 0.131, z: 0.07}
+  m_LocalPosition: {x: -1.36, y: 0.131, z: 0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -422,6 +423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbc36dea6745d294aaeac5652c2b7d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _disableAfterCut: 0
 --- !u!1 &311025447
 GameObject:
   m_ObjectHideFlags: 3
@@ -1932,7 +1934,7 @@ GameObject:
   - component: {fileID: 4672259404669713999}
   m_Layer: 0
   m_Name: topHi6
-  m_TagString: Orange
+  m_TagString: Cyan
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3720,7 +3722,7 @@ GameObject:
   - component: {fileID: 7726862504544124519}
   m_Layer: 0
   m_Name: topHi5
-  m_TagString: Orange
+  m_TagString: Pink
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

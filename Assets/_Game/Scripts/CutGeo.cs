@@ -10,8 +10,8 @@ public class CutGeo : MonoBehaviour
         {
             string cutName = other.tag;
             other.gameObject.SetActive(false);
-            // disable cutter after cut
-           // this.gameObject.SetActive(false);
+            //disable cutter after cut
+           this.gameObject.SetActive(false);
         }
         
     }

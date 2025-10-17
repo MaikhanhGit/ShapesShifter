@@ -1,9 +1,10 @@
 
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OrangeCutter : MonoBehaviour
 {
-
+    [SerializeField] bool _disableAfterCut = true;
     private bool _isCut = false;
 
     private void OnTriggerEnter(Collider other)
@@ -15,11 +16,14 @@ public class OrangeCutter : MonoBehaviour
             if (name == "Orange")
             {
                 other.gameObject.SetActive(false);
+
                 _isCut = true;
-                // this.gameObject.SetActive(false);
+
+                if(_disableAfterCut == true)
+                {
+                    this.gameObject.SetActive(false);
+                }                
             }
-
-
         }
     }
 }
