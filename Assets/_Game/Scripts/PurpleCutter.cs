@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PurpleCutter : MonoBehaviour
 {
-    [SerializeField] bool _disableAfterCut = true;
+    [SerializeField] private bool _disableAfterCut = true;
+    [SerializeField] private bool _keepCutting = false;
     private bool _isCut = false;
 
     private void OnTriggerEnter(Collider other)
@@ -15,7 +16,10 @@ public class PurpleCutter : MonoBehaviour
             {
                 other.gameObject.SetActive(false);
 
-                _isCut = true;
+                if (_keepCutting == false)
+                {
+                    _isCut = true;
+                }                
 
                 if (_disableAfterCut == true)
                 {

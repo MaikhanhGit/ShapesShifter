@@ -88,7 +88,7 @@ public class Cutter : MonoBehaviour
         //Make sure player can only cut Once
         if(_otherRB)
         {
-            if (!_isCut)
+            if (!_isCut && _isCentered == true)
             {                
                 _cutter.gameObject.SetActive(true);
                 _isCut = true;
