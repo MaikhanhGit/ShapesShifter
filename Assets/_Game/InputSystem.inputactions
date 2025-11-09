@@ -101,7 +101,7 @@
                     "name": "",
                     "id": "192f2e95-c720-444e-b791-8c3b4d6faf47",
                     "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Jump",

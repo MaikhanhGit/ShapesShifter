@@ -9,27 +9,34 @@ public class Ball : MonoBehaviour
 {
     private Rigidbody _rb;
     private float _movementX;
-    private float _movementY;  
+    private float _movementY;
+    private int _numChildren = 0;    
+    private static float globalGravity = -9.81f;
+    private float _buttonPressedTime;
+    private Vector3 _gravityVector;
+    private float _bufferCheckDistance = 0.1f;
+
+    public int _currentNumChildren = 0;
+
+    [Header("Ball Movement")]
     [SerializeField] float _pushForce = 20f;
     [SerializeField] float _rollForce = 10f;
     [SerializeField] float _pushForceAfter = 2f;
     [SerializeField] float _jumpForce = 3f;
     [SerializeField] float _gravityScale = 1f;
-    [SerializeField] float _fallGravityScale = 5f;
-    [SerializeField] float _buttonPressedWindow = 0.2f;
-    [SerializeField] float _groundCheckDistance = 0f;
-    [SerializeField] GameObject[] _geos = null;
-    [SerializeField] private float _clampingValue = 3f;
-    [SerializeField] private Vector3 _boxSize;
-    [SerializeField] private float _maxDistance;
+    [SerializeField] float _fallGravityScale = 5f;            
+    [SerializeField] private float _clampingValue = 3f;        
+    
+
+    [Header("Ground Detection")]
     [SerializeField] private LayerMask layerMask;
-    private int _numChildren = 0;
-    public int _currentNumChildren = 0;
-    private static float globalGravity = -9.81f;
-    private bool _isGrounded = true;
-    private float _buttonPressedTime;
-    private Vector3 _gravityVector;
-    private float _bufferCheckDistance = 0.1f;
+    [SerializeField] float _groundCheckDistance = 0f;
+    private float bufferCheckDistance = 0.1f;
+    public bool _isGrounded = false;
+    
+
+    [SerializeField] GameObject[] _geos = null;
+
 
 
     // Start is called before the first frame update
@@ -56,6 +63,7 @@ public class Ball : MonoBehaviour
         }               
     }
 
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Ground"))
@@ -70,21 +78,13 @@ public class Ball : MonoBehaviour
         {
             _isGrounded = false;
         }
-
-        if (other.CompareTag("CutterShell"))
-        {
-            if (other.gameObject.GetComponent<Cutter>())
-            {
-               // other.gameObject.GetComponent<Cutter>().ResetValues();
-            }
-            
-        }
+       
     }
-    
+    */
 
     private void Update()
     {
-        //_isGrounded = Physics.Raycast(transform.position, -transform.up, 1.1f);
+        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, layerMask);
     }
 
     private void FixedUpdate()
