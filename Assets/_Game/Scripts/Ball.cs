@@ -1,32 +1,187 @@
 using UnityEngine;
+using System.Collections;
 using UnityEngine.InputSystem;
+using System.Security.Claims;
+using TMPro;
+using Unity.VisualScripting;
 
 public class Ball : MonoBehaviour
 {
     private Rigidbody _rb;
     private float _movementX;
-    private float _movementY;
-    [SerializeField] float _speed = 10f;
+    private float _movementY;  
+    [SerializeField] float _pushForce = 20f;
+    [SerializeField] float _rollForce = 10f;
+    [SerializeField] float _pushForceAfter = 2f;
+    [SerializeField] float _jumpForce = 3f;
+    [SerializeField] float _gravityScale = 1f;
+    [SerializeField] float _fallGravityScale = 5f;
+    [SerializeField] float _buttonPressedWindow = 0.2f;
+    [SerializeField] float _groundCheckDistance = 0f;
     [SerializeField] GameObject[] _geos = null;
+    [SerializeField] private float _clampingValue = 3f;
+    [SerializeField] private Vector3 _boxSize;
+    [SerializeField] private float _maxDistance;
+    [SerializeField] private LayerMask layerMask;
+    private int _numChildren = 0;
+    public int _currentNumChildren = 0;
+    private static float globalGravity = -9.81f;
+    private bool _isGrounded = true;
+    private float _buttonPressedTime;
+    private Vector3 _gravityVector;
+    private float _bufferCheckDistance = 0.1f;
 
 
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        
+        _numChildren = gameObject.transform.childCount;       
+        _currentNumChildren = _numChildren;
     }   
 
    void OnMove(InputValue movementValue)
     {
         Vector2 movementVector  = movementValue.Get<Vector2>();
         _movementX = movementVector.x;
-        _movementY = movementVector.y;
+        _movementY = movementVector.y;        
+    }
+
+  void OnJump()
+    {
+        if (_isGrounded)
+        {
+            Debug.Log("jumping");
+            _rb.AddForce(Vector3.up *  _jumpForce, ForceMode.Impulse);        
+        }               
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            _isGrounded = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            _isGrounded = false;
+        }
+
+        if (other.CompareTag("CutterShell"))
+        {
+            if (other.gameObject.GetComponent<Cutter>())
+            {
+               // other.gameObject.GetComponent<Cutter>().ResetValues();
+            }
+            
+        }
+    }
+    
+
+    private void Update()
+    {
+        //_isGrounded = Physics.Raycast(transform.position, -transform.up, 1.1f);
     }
 
     private void FixedUpdate()
     {
-        Vector3 movement = new Vector3(_movementX, 0.0f, _movementY);
-        _rb.AddForce(movement  * _speed);
+        // artificial gravity
+        if (_rb.velocity.y > 0)
+        {
+            _gravityVector = globalGravity * _gravityScale * Vector3.up;
+        }
+        if (_rb.velocity.y <= 0)
+        {
+            _gravityVector = globalGravity * _fallGravityScale * Vector3.up;
+            
+        }
+        _rb.AddForce(_gravityVector, ForceMode.Acceleration);        
+        
+        // Movement
+        Vector3 movement = new Vector3(_movementX, 0f , _movementY);
+        _currentNumChildren = gameObject.transform.childCount;
+        Vector3 pushVector = movement * _pushForce * Time.fixedDeltaTime;
+        Vector3 rollVector = movement * _rollForce * Time.fixedDeltaTime;
+
+        //Clamping
+
+        if (pushVector.x < -_clampingValue)
+        {
+            pushVector.x = -_clampingValue;
+        }
+        if (pushVector.x > _clampingValue)
+        {
+            pushVector.x = _clampingValue;
+        }
+        if (pushVector.z < -_clampingValue)
+        {
+            pushVector.z = -_clampingValue;
+        }
+        if (pushVector.z > _clampingValue)
+        {
+            pushVector.z = _clampingValue;
+        }
+
+        if (rollVector.x < -_clampingValue)
+        {
+            rollVector.x = -_clampingValue;
+        }
+        if (rollVector.x > _clampingValue)
+        {
+            rollVector.x = _clampingValue;
+        }
+        if (rollVector.z < -_clampingValue)
+        {
+            rollVector.z = -_clampingValue;
+        }
+        if (rollVector.z > _clampingValue)
+        {
+            rollVector.z = _clampingValue;
+        }
+
+        _rb.AddForce(pushVector);
+
+        _rb.AddTorque(rollVector);        
+
+        /*
+                if (_currentNumChildren >= 2)
+                {
+                    _rb.AddForce(movement * _pushForce * Time.fixedDeltaTime);
+
+                    _rb.AddTorque(movement * _rollForce * Time.fixedDeltaTime);
+                    //_rb.velocity = movement * _pushForce;
+                }
+
+                if (_currentNumChildren < 2)
+                {            
+                    Vector3 gravityVector =  Vector3.up * (-9.81f);
+                    _rb.AddForce(gravityVector * 100 * Time.fixedDeltaTime, ForceMode.Acceleration);
+                    //_rb.angularDrag = 0f;
+                    //_rb.drag = 0f;
+                    //_rb.mass = 0f;
+                    // _rb.automaticInertiaTensor = false;
+                    //_rb.inertiaTensorRotation = Quaternion.identity;
+                    //_rb.inertiaTensor = new Vector3(1f, 1f, 1f);
+                    gameObject.transform.rotation = Quaternion.identity;
+                    _rb.constraints = RigidbodyConstraints.FreezeRotationY;
+
+
+                    _rb.velocity = new Vector3(_movementX * _pushForceAfter,
+                        0f, _movementY * _pushForceAfter);
+                }
+
+                */
+    }
+
+    
+    
+
+    public void CountChild()
+    {
+        //Debug.Log("Num Children: " + _currentNumChildren);
     }
 }
