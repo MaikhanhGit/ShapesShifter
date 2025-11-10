@@ -9,7 +9,7 @@ public class Cutter : MonoBehaviour
     [SerializeField] private float _yOffset = 0.5f;
     [SerializeField] private GameObject[] _cutGeo = null;
     [SerializeField] private float _objReleaseForce = 100f;
-
+    [SerializeField] private float _aftercutReleaseMulti = 20f;
     private float _movementX;
     private float _movementY;    
     private float _rotateX = 0f;
@@ -19,6 +19,7 @@ public class Cutter : MonoBehaviour
     private GameObject _otherObj = null;
     private Ball _ball = null;
     private Vector3 _releaseForce = Vector3.zero;
+    
     private bool _isCentered = false;    
     private bool _isTurnable = false;
     private bool _isReleased = false;
@@ -89,7 +90,7 @@ public class Cutter : MonoBehaviour
             return;
         }
 
-        if (!_isCentered && !_isReleased) 
+        if (!_isCentered && !_isReleased && _otherRB) 
         {
             ZoomCameraIn();
             
@@ -151,111 +152,147 @@ public class Cutter : MonoBehaviour
         if(!_isCut)
         {
             for (int i = 0; i < _cutGeo.Length; i++)
-            {
-                Debug.Log(_cutGeo.Length);
+            {                
                 _cutGeo[i].GetComponent<CutGeo>().Cut();
             }
-            //_cutGeo.GetComponent<CutGeo>().Cut();
+            
         }
     }    
 
     private void OnReleaseObj()
     {
-        if (_movementX <= 0)
+        if (_isCentered)
         {
-            _movementX = _objReleaseForce;
+            if (_isReleased == false)
+            {
+                if (_movementX <= 0)
+                {
+                    _movementX = _objReleaseForce;
 
-        }
-        if (_movementY <= 0)
-        {
-            _movementY = _objReleaseForce;
-        }
+                }
+                if (_movementY <= 0)
+                {
+                    _movementY = _objReleaseForce;
+                }
 
-        _releaseForce = new Vector3(_movementX * _objReleaseForce * 3, _objReleaseForce, _movementY * _objReleaseForce);
-        _isReleaseHit = true;
-        ReleaseObj();
+                _releaseForce = new Vector3(_movementX * _objReleaseForce * 3,
+                    _objReleaseForce, _movementY * _objReleaseForce);
+
+                _isReleaseHit = true;
+
+                ReleaseObj();
+                _isReleased = true;
+            }
+        }
+        
+        
     }
 
     public void ReleaseObj()
     {
+        Debug.Log("Release");
         ResetCameraFOV();
 
-        if (!_isReleaseHit)
+        if (_otherRB)
         {
-            
-            _releaseForce = new Vector3(_objReleaseForce * 120, _objReleaseForce * 110, _objReleaseForce * 110);
-            Debug.Log("Cut Pushed: " + _releaseForce);
-
+            _otherRB.isKinematic = false;
+            _otherRB.WakeUp();
             if (!_isCut)
             {
-                _otherRB.isKinematic = false;
-                _otherRB.WakeUp();
                 _otherRB.AddForce(_releaseForce);
 
                 ResetValues();
             }
-            else if (_isCut)
+
+            if (_isCut)
             {
-                if (_otherRB)
-                {
-                    _otherRB.isKinematic = false;
-                    //_otherRB.WakeUp();
-                    _otherRB.AddForce(_releaseForce);
+                _otherRB.AddForce(_releaseForce);
 
-                    // TODO: add Disabled Visuals
-                    gameObject.GetComponent<Cutter>().enabled = false;
+                // TODO: add Disabled Visuals
+                //gameObject.GetComponent<Cutter>().enabled = false;
 
-                    DelayHelper.DelayAction(this, DestroyThis, 0.5f);
-                }
+                DelayHelper.DelayAction(this, DestroyThis, 0.3f);
+
             }
         }
-        else if (_isReleaseHit)
+        /*
+        if (!_isReleaseHit && _otherRB)
         {
-            Debug.Log("Pushed" + _releaseForce);
+            _otherRB.isKinematic = false;
+            _otherRB.WakeUp();
+            Debug.Log("ReleaseFromCut");        
+
+            _releaseForce = new Vector3(_objReleaseForce * _aftercutReleaseMulti * 2, 
+                _objReleaseForce * _aftercutReleaseMulti, _objReleaseForce * _aftercutReleaseMulti);            
+
             if (!_isCut)
             {
-                _otherRB.isKinematic = false;
-                _otherRB.WakeUp();
+                Debug.Log("Release Not Cut: " + _releaseForce);
+                _otherRB.AddForce(_releaseForce);      
+        
+                ResetValues();
+            }
+
+            if (_isCut)
+            {
+                Debug.Log("Release After Cut: " + _releaseForce);
+                _otherRB.AddForce(_releaseForce);
+
+                // TODO: add Disabled Visuals
+                gameObject.GetComponent<Cutter>().enabled = false;
+
+                DelayHelper.DelayAction(this, DestroyThis, 0.5f);
+                
+            }
+        }
+
+        if (_isReleaseHit & _otherRB)
+        {
+            _otherRB.isKinematic = false;
+            _otherRB.WakeUp();
+            if (!_isCut)
+            {                
                 _otherRB.AddForce(_releaseForce);
 
                 ResetValues();
             }
-            else if (_isCut)
-            {
-                if (_otherRB)
-                {
-                    _otherRB.isKinematic = false;
-                    //_otherRB.WakeUp();
-                    _otherRB.AddForce(_releaseForce);
 
-                    // TODO: add Disabled Visuals
-                    gameObject.GetComponent<Cutter>().enabled = false;
+            if (_isCut)
+            {                
+                _otherRB.AddForce(_releaseForce);
 
-                    DelayHelper.DelayAction(this, DestroyThis, 0.2f);
-                }
-            }        
+                // TODO: add Disabled Visuals
+                gameObject.GetComponent<Cutter>().enabled = false;
+
+                DelayHelper.DelayAction(this, DestroyThis, 0.5f);
+                
+            }      
+        
             
         }
+        */
           
     }
 
     public void ResetValues()
     {        
         
-        _isReset = true;        
+        _isReset = true;
+        //_isReleased = true;
 
-        DelayHelper.DelayAction(this, SetReset, 0.5f);
+        DelayHelper.DelayAction(this, SetReset, 0.2f);
     }
 
     private void SetReset()
     {        
         _isReset = false;
+
         _isCut = false;
         _isReleased = false;
         _isCentered = false;
         _isTurnable = false;
         _entered = false;
-        _isReleaseHit = false;
+        _isReleaseHit = false;       
         _otherObj = null;
         _otherRB = null;
         _ball = null;

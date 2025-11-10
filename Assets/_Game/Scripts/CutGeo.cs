@@ -26,7 +26,7 @@ public class CutGeo : MonoBehaviour
             //disable cutter after cut
             if( _disableWhenDone)
             {
-                this.gameObject.SetActive(false);                
+                //this.gameObject.SetActive(false);                
             }
             
         }

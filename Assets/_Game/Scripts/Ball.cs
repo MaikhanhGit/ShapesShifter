@@ -13,16 +13,19 @@ public class Ball : MonoBehaviour
     private float _movementY;
     private int _numChildren = 0;    
     private static float globalGravity = -9.81f;    
-    private Vector3 _gravityVector;      
+    private Vector3 _gravityVector;
+    private bool _isCube = false;
 
     [Header("Ball Movement")]
     [SerializeField] float _pushForce = 20f;
     [SerializeField] float _rollForce = 10f;
-    [SerializeField] float _pushForceAfter = 2f;
+    [SerializeField] float _cubePushForce = 10f;    
     [SerializeField] float _jumpForce = 3f;
+    [SerializeField] float _cubeJumpForce = 10f;
     [SerializeField] float _gravityScale = 1f;
     [SerializeField] float _fallGravityScale = 5f;            
-    [SerializeField] private float _clampingValue = 3f;            
+    [SerializeField] private float _clampingValue = 3f;
+    [SerializeField] private float _cubeClampingValue = 1.5f;
 
     [Header("Ground Detection")]
     [SerializeField] private LayerMask layerMask;
@@ -42,7 +45,7 @@ public class Ball : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _numChildren = gameObject.transform.childCount;       
         _currentNumChildren = _numChildren;
-            
+        Debug.Log("NumChild: " + _currentNumChildren);
     }   
 
    void OnMove(InputValue movementValue)
@@ -54,10 +57,17 @@ public class Ball : MonoBehaviour
 
   void OnJump()
     {
-        if (_isGrounded)
+        if (_isGrounded && !_isCube)
         {            
             _rb.AddForce(Vector3.up *  _jumpForce, ForceMode.Impulse);        
-        }               
+        }
+
+        if (_isGrounded && _isCube)
+        {
+            _jumpForce = _cubeJumpForce;
+
+            _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        }
     }
 
     private void Update()
@@ -77,15 +87,24 @@ public class Ball : MonoBehaviour
             _gravityVector = globalGravity * _fallGravityScale * Vector3.up;
             
         }
-        _rb.AddForce(_gravityVector, ForceMode.Acceleration);        
-        
-        // Movement
-        Vector3 movement = new Vector3(_movementX, 0f , _movementY);
+        _rb.AddForce(_gravityVector, ForceMode.Acceleration);
+
+        // Update NumChildren left
         _currentNumChildren = gameObject.transform.childCount;
+        
+        if(_currentNumChildren < 2)
+        {
+            _isCube = true;
+            _clampingValue = _cubeClampingValue;
+        }
+        
+
+        // Movement
+        Vector3 movement = new Vector3(_movementX, 0f , _movementY);        
         Vector3 pushVector = movement * _pushForce * Time.fixedDeltaTime;
         Vector3 rollVector = movement * _rollForce * Time.fixedDeltaTime;
-
-        //Clamping
+            
+            //Clamping
 
         if (pushVector.x < -_clampingValue)
         {
@@ -121,9 +140,20 @@ public class Ball : MonoBehaviour
             rollVector.z = _clampingValue;
         }
 
-        _rb.AddForce(pushVector, ForceMode.Acceleration);
+        if (!_isCube)
+        {
+            _rb.AddForce(pushVector, ForceMode.Acceleration);
 
-        _rb.AddTorque(rollVector, ForceMode.Acceleration);        
+            _rb.AddTorque(rollVector, ForceMode.Acceleration);
+        }
+        else if (_isCube)
+        {
+            pushVector = pushVector * _cubePushForce;
+
+            _rb.AddForce(pushVector, ForceMode.Acceleration);
+
+            _rb.AddTorque(rollVector, ForceMode.Acceleration);
+        }
 
         /*
                 if (_currentNumChildren >= 2)
