@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using System.Security.Claims;
 using TMPro;
 using Unity.VisualScripting;
+using Cinemachine;
 
 public class Ball : MonoBehaviour
 {
@@ -11,12 +12,8 @@ public class Ball : MonoBehaviour
     private float _movementX;
     private float _movementY;
     private int _numChildren = 0;    
-    private static float globalGravity = -9.81f;
-    private float _buttonPressedTime;
-    private Vector3 _gravityVector;
-    private float _bufferCheckDistance = 0.1f;
-
-    public int _currentNumChildren = 0;
+    private static float globalGravity = -9.81f;    
+    private Vector3 _gravityVector;      
 
     [Header("Ball Movement")]
     [SerializeField] float _pushForce = 20f;
@@ -25,18 +22,18 @@ public class Ball : MonoBehaviour
     [SerializeField] float _jumpForce = 3f;
     [SerializeField] float _gravityScale = 1f;
     [SerializeField] float _fallGravityScale = 5f;            
-    [SerializeField] private float _clampingValue = 3f;        
-    
+    [SerializeField] private float _clampingValue = 3f;            
 
     [Header("Ground Detection")]
     [SerializeField] private LayerMask layerMask;
     [SerializeField] float _groundCheckDistance = 0f;
     private float bufferCheckDistance = 0.1f;
     public bool _isGrounded = false;
-    
 
+    [Header("Game Play")]
     [SerializeField] GameObject[] _geos = null;
-
+    public int _currentNumChildren = 0;
+        
 
 
     // Start is called before the first frame update
@@ -45,6 +42,7 @@ public class Ball : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _numChildren = gameObject.transform.childCount;       
         _currentNumChildren = _numChildren;
+            
     }   
 
    void OnMove(InputValue movementValue)
@@ -57,30 +55,10 @@ public class Ball : MonoBehaviour
   void OnJump()
     {
         if (_isGrounded)
-        {
-            Debug.Log("jumping");
+        {            
             _rb.AddForce(Vector3.up *  _jumpForce, ForceMode.Impulse);        
         }               
     }
-
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            _isGrounded = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            _isGrounded = false;
-        }
-       
-    }
-    */
 
     private void Update()
     {
@@ -143,9 +121,9 @@ public class Ball : MonoBehaviour
             rollVector.z = _clampingValue;
         }
 
-        _rb.AddForce(pushVector);
+        _rb.AddForce(pushVector, ForceMode.Acceleration);
 
-        _rb.AddTorque(rollVector);        
+        _rb.AddTorque(rollVector, ForceMode.Acceleration);        
 
         /*
                 if (_currentNumChildren >= 2)
@@ -179,9 +157,4 @@ public class Ball : MonoBehaviour
 
     
     
-
-    public void CountChild()
-    {
-        //Debug.Log("Num Children: " + _currentNumChildren);
-    }
 }
