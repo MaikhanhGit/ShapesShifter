@@ -33,9 +33,12 @@ public class Cutter : MonoBehaviour
     [SerializeField] private float _focusFOV = 13f;
     [SerializeField] private float _focusCameraY = 0.5f;
     private float _defaultFOV = 0f;
-    private float _defaultCameraY = 0f;
+    private float _defaultCameraOffsetY = 0.0f;
+    private float _defaultVerDamp = 0;
+    private float _defaultHorDamp = 0;
     private CinemachineVirtualCamera _camera = null;
-    private CinemachineTransposer _transposer = null;
+    private CinemachineTransposer _camTransposer = null;
+    private CinemachineComposer _camComposer = null;
 
     private void Start()
     {
@@ -45,17 +48,24 @@ public class Cutter : MonoBehaviour
         if (_virtualCamera)
         {            
             _camera = _virtualCamera.GetComponent<CinemachineVirtualCamera>();
+            _camTransposer = _camera.GetCinemachineComponent<CinemachineTransposer>();
+            _camComposer = _camera.GetCinemachineComponent<CinemachineComposer>();
+
             if (_camera)
             {                
                 _defaultFOV = _camera.m_Lens.FieldOfView;              
             }
             
-            if (_virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow.
-                GetComponent<CinemachineTransposer>())
+            if (_camTransposer)
+            {               
+                _defaultCameraOffsetY = _camTransposer.m_FollowOffset.y;               
+            }
+
+            if (_camComposer)
             {
-                _defaultCameraY = _virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow.
-                    GetComponent<CinemachineTransposer>().m_FollowOffset.y;               
-            }            
+                _defaultVerDamp = _camComposer.m_VerticalDamping;
+                _defaultHorDamp = _camComposer.m_HorizontalDamping;
+            }
             
         }
     }    
@@ -310,29 +320,48 @@ public class Cutter : MonoBehaviour
 
     private void ZoomCameraIn()
     {
+       
+        if (_camTransposer)
+        {
+            //_virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow.
+            //  GetComponent<CinemachineTransposer>().m_FollowOffset.y = _focusCameraY;
+
+            _camTransposer.m_FollowOffset.y = _focusCameraY;
+            
+        }
+
+        if (_camComposer)
+        {           
+            _camComposer.m_VerticalDamping = 0.0f;
+
+            _camComposer.m_HorizontalDamping = 0.0f;
+        }
+
         if (_camera)
         {
             _camera.m_Lens.FieldOfView = _focusFOV;            
         }
-        if (_virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow.
-            GetComponent<CinemachineTransposer>())
-        {
-            _virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow.
-                GetComponent<CinemachineTransposer>().m_FollowOffset.y = _focusCameraY;
-        }
+
+        
     }
 
     private void ResetCameraFOV()
-    {
+    {      
+        if (_camTransposer)
+        {
+            _camTransposer.m_FollowOffset.y = _defaultCameraOffsetY;
+        }
+
+        if (_camComposer)
+        {
+            _camComposer.m_VerticalDamping = _defaultVerDamp;
+
+            _camComposer.m_HorizontalDamping = _defaultHorDamp;
+        }
+
         if (_camera)
         {
-            _camera.m_Lens.FieldOfView = _defaultFOV;            
-        }
-        if (_virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow.
-            GetComponent<CinemachineTransposer>())
-        {
-            _virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow.
-                GetComponent<CinemachineTransposer>().m_FollowOffset.y = _defaultCameraY;
+            _camera.m_Lens.FieldOfView = _defaultFOV;
         }
     }
 
