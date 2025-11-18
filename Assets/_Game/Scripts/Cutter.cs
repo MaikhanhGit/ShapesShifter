@@ -39,7 +39,8 @@ public class Cutter : MonoBehaviour
 
     private void Start()
     {
-        
+        _releaseForce = new Vector3(_objReleaseForce * 2,
+                    _objReleaseForce * 3, _objReleaseForce * 0);
 
         if (_virtualCamera)
         {            
@@ -57,9 +58,7 @@ public class Cutter : MonoBehaviour
             }            
             
         }
-    }
-
-    
+    }    
 
     private void OnTriggerEnter(Collider other)
     {       
@@ -189,16 +188,18 @@ public class Cutter : MonoBehaviour
     }
 
     public void ReleaseObj()
-    {
-        Debug.Log("Release");
+    {       
         ResetCameraFOV();
 
         if (_otherRB)
         {
+            
             _otherRB.isKinematic = false;
             _otherRB.WakeUp();
-            if (!_isCut)
+
+            if (_isCut == false)
             {
+                
                 _otherRB.AddForce(_releaseForce);
 
                 ResetValues();
@@ -206,14 +207,16 @@ public class Cutter : MonoBehaviour
 
             if (_isCut)
             {
-                _otherRB.AddForce(_releaseForce);
-
+                Debug.Log("Cut");
+                _otherRB.AddForce(_releaseForce * _aftercutReleaseMulti);
                 // TODO: add Disabled Visuals
                 //gameObject.GetComponent<Cutter>().enabled = false;
-
+                ResetValues();
                 DelayHelper.DelayAction(this, DestroyThis, 0.3f);
+                
 
             }
+           
         }
         /*
         if (!_isReleaseHit && _otherRB)
@@ -296,6 +299,8 @@ public class Cutter : MonoBehaviour
         _otherObj = null;
         _otherRB = null;
         _ball = null;
+
+        
     }
 
     private void DestroyThis()

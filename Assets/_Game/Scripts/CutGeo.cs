@@ -7,7 +7,8 @@ public class CutGeo : MonoBehaviour
 {
     [SerializeField] private GameObject _cutter = null;
     [SerializeField] private string _colorToCut = null;
-    
+    [SerializeField] private GameObject _ball = null;
+
     private bool _isCorrectColor = false;
     private GameObject _objectToCut = null;
     private bool _disableWhenDone = true;
@@ -17,6 +18,11 @@ public class CutGeo : MonoBehaviour
         if (_isCorrectColor && _objectToCut)
         {            
             Destroy(_objectToCut);
+
+            if (_ball)
+            {
+                
+            }
 
             _cutter.GetComponent<Cutter>()._isCut = true;
             _cutter.GetComponent<Cutter>().ReleaseObj();
