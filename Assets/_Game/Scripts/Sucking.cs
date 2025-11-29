@@ -7,21 +7,22 @@ public class Sucking : MonoBehaviour
 {
     [SerializeField] float _yOffset = 0.2f;
     [SerializeField] float _objReleaseForce = 250f;
-    [SerializeField] Vector3 _rotationVector = Vector3.zero;
+    [SerializeField] Vector3 _rotationVector = new Vector3 (1f, 1f, 1f);
     [SerializeField] float _rotationSpeed = 1f;
+    [SerializeField] bool _isTopPlatform = false;
     private GameObject _otherObj = null;
     private Rigidbody _otherRB = null;
     private bool _isCentered = false;
     private bool _isReset = false;
     private bool _isHolding = false;
-
+    private Vector3 _releaseForce = new Vector3(1f, 1f, 1f);
+    private bool _isReleasing = false;
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && !_isReset)
-        {
-            Debug.Log("PlayerEnter");
+        if (other.gameObject.CompareTag("Player") && !_isReset && _isReleasing == false)
+        {          
             _otherObj = other.gameObject;
             _otherRB = other.GetComponent<Rigidbody>();
 
@@ -46,7 +47,7 @@ public class Sucking : MonoBehaviour
 
     private void FixedUpdate()
     {        
-        if (_otherRB && _isCentered && _isHolding)
+        if (_otherRB && _isCentered && _isHolding && _isReleasing == false)
         {
             _otherRB.transform.Rotate(_rotationVector * _rotationSpeed * Time.fixedDeltaTime);
 
@@ -55,6 +56,11 @@ public class Sucking : MonoBehaviour
 
             _otherObj.transform.position = newPos;
         }
+
+        if (_isReleasing == true)
+        {
+            this.gameObject.GetComponent<BoxCollider>().enabled = false;
+        }
     }
 
     private void OnReleaseObj()
@@ -62,21 +68,32 @@ public class Sucking : MonoBehaviour
         if (_isCentered)
         {
             _isHolding = false;
-            
-            ReleaseObj();
+
+            if (_isTopPlatform == false)
+            {
+                _releaseForce = new Vector3(_objReleaseForce, _objReleaseForce * 2, 0f);
+              
+                ReleaseObj();
+            }
+
+            else if (_isTopPlatform == true)
+            {              
+                _releaseForce = new Vector3(1000f, _objReleaseForce * -1, 0f);
+               
+                _isReleasing = true;
+              
+                ReleaseObj();
+            }
         }
 
     }
 
     private void ReleaseObj()
-    {
-        
-        Vector3 releaseForce = new Vector3(_objReleaseForce, _objReleaseForce * 2, 0f);
-
+    {             
         _otherRB.isKinematic = false;
         _otherRB.WakeUp();
 
-        _otherRB.AddForce(releaseForce);
+        _otherRB.AddForce(_releaseForce);
 
         ResetValues();
     }
@@ -95,5 +112,8 @@ public class Sucking : MonoBehaviour
         _isHolding = false;
         _otherObj = null;
         _otherRB = null;
+        _releaseForce = new Vector3(1f, 1f, 1f);
+        _isReleasing = false;
+        this.gameObject.GetComponent<BoxCollider>().enabled = true;
     }
 }
