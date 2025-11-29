@@ -2135,6 +2135,7 @@ MonoBehaviour:
   _objReleaseForce: 100
   _rotationVector: {x: 0, y: 90, z: 0}
   _rotationSpeed: 10
+  _isTopPlatform: 0
 --- !u!65 &634150896
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2746,6 +2747,7 @@ MonoBehaviour:
   _objReleaseForce: 100
   _rotationVector: {x: 0, y: 90, z: 0}
   _rotationSpeed: 10
+  _isTopPlatform: 1
 --- !u!65 &871920523
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3141,7 +3143,7 @@ GameObject:
   - component: {fileID: 1108507916}
   - component: {fileID: 1108507915}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: TopMovingPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7642,6 +7644,7 @@ MonoBehaviour:
   _objReleaseForce: 100
   _rotationVector: {x: 0, y: 90, z: 0}
   _rotationSpeed: 10
+  _isTopPlatform: 0
 --- !u!23 &4586195413756795054
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7776,6 +7779,7 @@ MonoBehaviour:
   _objReleaseForce: 100
   _rotationVector: {x: 0, y: 90, z: 0}
   _rotationSpeed: 1
+  _isTopPlatform: 0
 --- !u!1 &4801377893144608535
 GameObject:
   m_ObjectHideFlags: 0
