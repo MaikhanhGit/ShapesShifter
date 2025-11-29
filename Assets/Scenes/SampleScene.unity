@@ -673,10 +673,12 @@ MonoBehaviour:
   _cutGeo:
   - {fileID: 689187398}
   _objReleaseForce: 7
-  _aftercutReleaseMulti: 20
+  _aftercutReleaseMulti: 45
+  _releaseDirectionVertMulti: 1.2
+  _releaseDirectionHoriMulti: 1
   _isCut: 0
   _virtualCamera: {fileID: 1894682910}
-  _focusFOV: 12
+  _focusFOV: 15
   _focusCameraY: 0.5
 --- !u!65 &56048070
 BoxCollider:
@@ -1080,10 +1082,12 @@ MonoBehaviour:
   _cutGeo:
   - {fileID: 2061822026}
   _objReleaseForce: 7
-  _aftercutReleaseMulti: 20
+  _aftercutReleaseMulti: 45
+  _releaseDirectionVertMulti: 1.2
+  _releaseDirectionHoriMulti: 1
   _isCut: 0
   _virtualCamera: {fileID: 1894682910}
-  _focusFOV: 12
+  _focusFOV: 15
   _focusCameraY: 0.5
 --- !u!65 &133075899
 BoxCollider:
@@ -1493,10 +1497,12 @@ MonoBehaviour:
   _cutGeo:
   - {fileID: 1560585456}
   _objReleaseForce: 7
-  _aftercutReleaseMulti: 20
+  _aftercutReleaseMulti: 45
+  _releaseDirectionVertMulti: 1.2
+  _releaseDirectionHoriMulti: 1
   _isCut: 0
   _virtualCamera: {fileID: 1894682910}
-  _focusFOV: 12
+  _focusFOV: 15
   _focusCameraY: 0.5
 --- !u!65 &345013932
 BoxCollider:
@@ -1684,10 +1690,12 @@ MonoBehaviour:
   _cutGeo:
   - {fileID: 108445080}
   _objReleaseForce: 7
-  _aftercutReleaseMulti: 20
+  _aftercutReleaseMulti: 45
+  _releaseDirectionVertMulti: 1.2
+  _releaseDirectionHoriMulti: 1
   _isCut: 0
   _virtualCamera: {fileID: 1894682910}
-  _focusFOV: 12
+  _focusFOV: 15
   _focusCameraY: 0.5
 --- !u!65 &455870904
 BoxCollider:
@@ -4119,10 +4127,12 @@ MonoBehaviour:
   _cutGeo:
   - {fileID: 950435543}
   _objReleaseForce: 7
-  _aftercutReleaseMulti: 20
+  _aftercutReleaseMulti: 45
+  _releaseDirectionVertMulti: 1.2
+  _releaseDirectionHoriMulti: 1
   _isCut: 0
   _virtualCamera: {fileID: 1894682910}
-  _focusFOV: 12
+  _focusFOV: 15
   _focusCameraY: 0.5
 --- !u!65 &1407099633
 BoxCollider:
@@ -4811,10 +4821,12 @@ MonoBehaviour:
   _cutGeo:
   - {fileID: 1850092252}
   _objReleaseForce: 7
-  _aftercutReleaseMulti: 20
+  _aftercutReleaseMulti: 45
+  _releaseDirectionVertMulti: 1.2
+  _releaseDirectionHoriMulti: 1
   _isCut: 0
   _virtualCamera: {fileID: 1894682910}
-  _focusFOV: 12
+  _focusFOV: 15
   _focusCameraY: 0.5
 --- !u!65 &1576718541
 BoxCollider:
@@ -8799,10 +8811,12 @@ MonoBehaviour:
   _cutGeo:
   - {fileID: 2088153886851533662}
   _objReleaseForce: 7
-  _aftercutReleaseMulti: 20
+  _aftercutReleaseMulti: 45
+  _releaseDirectionVertMulti: 1.2
+  _releaseDirectionHoriMulti: 1
   _isCut: 0
   _virtualCamera: {fileID: 1894682910}
-  _focusFOV: 12
+  _focusFOV: 15
   _focusCameraY: 0.5
 --- !u!4 &7590102168647903711
 Transform:

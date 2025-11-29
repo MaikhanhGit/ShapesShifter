@@ -19,22 +19,11 @@ public class CutGeo : MonoBehaviour
         {            
             Destroy(_objectToCut);
 
-            if (_ball)
-            {
-                
-            }
-
             _cutter.GetComponent<Cutter>()._isCut = true;
             _cutter.GetComponent<Cutter>().ReleaseObj();
 
             ResetValues();
-
-            //disable cutter after cut
-            if( _disableWhenDone)
-            {
-                //this.gameObject.SetActive(false);                
-            }
-            
+           
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -61,8 +50,5 @@ public class CutGeo : MonoBehaviour
         _objectToCut = null;
     }
 
-    private void DestroyThisAfter()
-    {
-        Destroy(_cutter);
-    }
+   
 }

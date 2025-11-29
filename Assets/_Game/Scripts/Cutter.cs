@@ -10,6 +10,8 @@ public class Cutter : MonoBehaviour
     [SerializeField] private GameObject[] _cutGeo = null;
     [SerializeField] private float _objReleaseForce = 100f;
     [SerializeField] private float _aftercutReleaseMulti = 20f;
+    [SerializeField] private float _releaseDirectionVertMulti = 1.5f;
+    [SerializeField] private float _releaseDirectionHoriMulti = 1.2f;
     private float _movementX;
     private float _movementY;    
     private float _rotateX = 0f;
@@ -42,8 +44,9 @@ public class Cutter : MonoBehaviour
 
     private void Start()
     {
-        _releaseForce = new Vector3(_objReleaseForce * 2,
-                    _objReleaseForce * 3, _objReleaseForce * 0);
+        _releaseForce = new Vector3(_objReleaseForce * _releaseDirectionHoriMulti,
+                    _objReleaseForce * _releaseDirectionVertMulti, 
+                    _objReleaseForce * _releaseDirectionHoriMulti);
 
         if (_virtualCamera)
         {            
@@ -184,13 +187,13 @@ public class Cutter : MonoBehaviour
                     _movementY = _objReleaseForce;
                 }
 
-                _releaseForce = new Vector3(_movementX * _objReleaseForce * 3,
-                    _objReleaseForce, _movementY * _objReleaseForce);
+                _releaseForce = new Vector3(_movementX * _objReleaseForce,
+                   _movementY * _objReleaseForce * 2f, _movementY * _objReleaseForce);
 
                 _isReleaseHit = true;
 
                 ReleaseObj();
-                _isReleased = true;
+                //_isReleased = true;
             }
         }
         
@@ -200,6 +203,7 @@ public class Cutter : MonoBehaviour
     public void ReleaseObj()
     {       
         ResetCameraFOV();
+        _isReleased = true;
 
         if (_otherRB)
         {
@@ -208,23 +212,21 @@ public class Cutter : MonoBehaviour
             _otherRB.WakeUp();
 
             if (_isCut == false)
-            {
-                
+            {                
                 _otherRB.AddForce(_releaseForce);
 
                 ResetValues();
             }
 
-            if (_isCut)
+            if (_isCut == true)
             {
-                Debug.Log("Cut");
+                Debug.Log("Push");
+                
                 _otherRB.AddForce(_releaseForce * _aftercutReleaseMulti);
                 // TODO: add Disabled Visuals
                 //gameObject.GetComponent<Cutter>().enabled = false;
                 ResetValues();
-                DelayHelper.DelayAction(this, DestroyThis, 0.3f);
-                
-
+                DelayHelper.DelayAction(this, DestroyThis, 0.3f);                
             }
            
         }

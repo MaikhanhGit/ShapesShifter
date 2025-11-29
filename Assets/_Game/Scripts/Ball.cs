@@ -29,7 +29,8 @@ public class Ball : MonoBehaviour
 
     [Header("Ground Detection")]
     [SerializeField] private LayerMask layerMask;
-    [SerializeField] float _groundCheckDistance = 0f;
+    [SerializeField] private float _groundCheckDistance = 1f;
+    [SerializeField] private float _cubeGrouneCheckDistance = 0f;
     private float bufferCheckDistance = 0.1f;
     public bool _isGrounded = false;
 
@@ -71,8 +72,15 @@ public class Ball : MonoBehaviour
     }
 
     private void Update()
-    {
-        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, layerMask);
+    {        
+        if (_isCube == false)
+        {
+            _isGrounded = Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, layerMask);
+        }
+        else if(_isCube == true)
+        {
+            _isGrounded = Physics.Raycast(transform.position, Vector3.down, _cubeGrouneCheckDistance, layerMask);
+        }
     }
 
     private void FixedUpdate()
