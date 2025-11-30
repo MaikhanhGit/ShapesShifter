@@ -7,9 +7,8 @@ using UnityEngine.InputSystem;
 public class Cutter : MonoBehaviour
 {
     [SerializeField] private float _yOffset = 0.5f;
-    [SerializeField] private GameObject[] _cutGeo = null;
-    [SerializeField] private float _objReleaseForce = 100f;
-    [SerializeField] private float _aftercutReleaseMulti = 20f;
+    [SerializeField] private GameObject[] _cutGeo = null;  
+    [SerializeField] private float _aftercutReleaseMulti = 10f;
     [SerializeField] private float _releaseDirectionVertMulti = 1.5f;
     [SerializeField] private float _releaseDirectionHoriMulti = 1.2f;
     private float _movementX;
@@ -20,7 +19,7 @@ public class Cutter : MonoBehaviour
     private Rigidbody _otherRB = null;
     private GameObject _otherObj = null;
     private Ball _ball = null;
-    private Vector3 _releaseForce = Vector3.zero;
+    private Vector3 _releaseForce = new Vector3(1f, 1f, 1f);
     
     private bool _isCentered = false;    
     private bool _isTurnable = false;
@@ -44,10 +43,7 @@ public class Cutter : MonoBehaviour
 
     private void Start()
     {
-        _releaseForce = new Vector3(_objReleaseForce * _releaseDirectionHoriMulti,
-                    _objReleaseForce * _releaseDirectionVertMulti, 
-                    _objReleaseForce * _releaseDirectionHoriMulti);
-
+       
         if (_virtualCamera)
         {            
             _camera = _virtualCamera.GetComponent<CinemachineVirtualCamera>();
@@ -124,7 +120,9 @@ public class Cutter : MonoBehaviour
     {
         Vector2 movementVector = movementValue.Get<Vector2>();        
         _movementX = movementVector.x;
-        _movementY = movementVector.y;
+        _movementY = movementVector.y;       
+        
+       
     }
 
     private void OnRotate(InputValue rotateValue)
@@ -164,7 +162,8 @@ public class Cutter : MonoBehaviour
         if(!_isCut)
         {
             for (int i = 0; i < _cutGeo.Length; i++)
-            {                
+            {
+                Debug.Log("Cutting");
                 _cutGeo[i].GetComponent<CutGeo>().Cut();
             }
             
@@ -179,21 +178,17 @@ public class Cutter : MonoBehaviour
             {
                 if (_movementX <= 0)
                 {
-                    _movementX = _objReleaseForce;
+                    //_movementX = _objReleaseForce;
 
                 }
                 if (_movementY <= 0)
                 {
-                    _movementY = _objReleaseForce;
-                }
-
-                _releaseForce = new Vector3(_movementX * _objReleaseForce,
-                   _movementY * _objReleaseForce * 2f, _movementY * _objReleaseForce);
+                    //_movementY = _objReleaseForce;
+                }                
 
                 _isReleaseHit = true;
 
-                ReleaseObj();
-                //_isReleased = true;
+                ReleaseObj();                
             }
         }
         
@@ -203,97 +198,51 @@ public class Cutter : MonoBehaviour
     public void ReleaseObj()
     {       
         ResetCameraFOV();
-        _isReleased = true;
+        _isReleased = true;        
 
         if (_otherRB)
-        {
-            
+        {            
             _otherRB.isKinematic = false;
             _otherRB.WakeUp();
 
-            if (_isCut == false)
-            {                
-                _otherRB.AddForce(_releaseForce);
-
-                ResetValues();
+            if(_movementX == 0)
+            {
+                _movementX = 1f;
             }
+            if (_movementY == 0)
+            {
+                _movementY = 1f;
+            }
+
+            if(_isCut == false)
+            {
+                _releaseForce = new Vector3(_movementX * _releaseDirectionHoriMulti,
+                   _releaseDirectionVertMulti, _movementY * _releaseDirectionHoriMulti);
+                
+                _otherRB.AddForce(_releaseForce, ForceMode.Impulse);
+            }
+           
 
             if (_isCut == true)
             {
-                Debug.Log("Push");
+                _releaseForce = new Vector3(_movementX * _releaseDirectionHoriMulti * _aftercutReleaseMulti,
+                  _releaseDirectionVertMulti * _aftercutReleaseMulti *10,
+                  _movementY * _releaseDirectionHoriMulti * _aftercutReleaseMulti);
                 
-                _otherRB.AddForce(_releaseForce * _aftercutReleaseMulti);
-                // TODO: add Disabled Visuals
-                //gameObject.GetComponent<Cutter>().enabled = false;
-                ResetValues();
+                _otherRB.AddForce(_releaseForce, ForceMode.Impulse);
+
                 DelayHelper.DelayAction(this, DestroyThis, 0.3f);                
             }
-           
-        }
-        /*
-        if (!_isReleaseHit && _otherRB)
-        {
-            _otherRB.isKinematic = false;
-            _otherRB.WakeUp();
-            Debug.Log("ReleaseFromCut");        
 
-            _releaseForce = new Vector3(_objReleaseForce * _aftercutReleaseMulti * 2, 
-                _objReleaseForce * _aftercutReleaseMulti, _objReleaseForce * _aftercutReleaseMulti);            
-
-            if (!_isCut)
-            {
-                Debug.Log("Release Not Cut: " + _releaseForce);
-                _otherRB.AddForce(_releaseForce);      
-        
-                ResetValues();
-            }
-
-            if (_isCut)
-            {
-                Debug.Log("Release After Cut: " + _releaseForce);
-                _otherRB.AddForce(_releaseForce);
-
-                // TODO: add Disabled Visuals
-                gameObject.GetComponent<Cutter>().enabled = false;
-
-                DelayHelper.DelayAction(this, DestroyThis, 0.5f);
-                
-            }
-        }
-
-        if (_isReleaseHit & _otherRB)
-        {
-            _otherRB.isKinematic = false;
-            _otherRB.WakeUp();
-            if (!_isCut)
-            {                
-                _otherRB.AddForce(_releaseForce);
-
-                ResetValues();
-            }
-
-            if (_isCut)
-            {                
-                _otherRB.AddForce(_releaseForce);
-
-                // TODO: add Disabled Visuals
-                gameObject.GetComponent<Cutter>().enabled = false;
-
-                DelayHelper.DelayAction(this, DestroyThis, 0.5f);
-                
-            }      
-        
-            
-        }
-        */
+            ResetValues();
+        }       
           
     }
 
     public void ResetValues()
     {        
         
-        _isReset = true;
-        //_isReleased = true;
+        _isReset = true;        
 
         DelayHelper.DelayAction(this, SetReset, 0.2f);
     }
@@ -324,10 +273,7 @@ public class Cutter : MonoBehaviour
     {
        
         if (_camTransposer)
-        {
-            //_virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Follow.
-            //  GetComponent<CinemachineTransposer>().m_FollowOffset.y = _focusCameraY;
-
+        {            
             _camTransposer.m_FollowOffset.y = _focusCameraY;
             
         }

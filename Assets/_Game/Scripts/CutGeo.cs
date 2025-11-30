@@ -17,11 +17,13 @@ public class CutGeo : MonoBehaviour
     {
         if (_isCorrectColor && _objectToCut)
         {            
-            Destroy(_objectToCut);
+            //Destroy(_objectToCut);
 
+            _ball.gameObject.GetComponent<Ball>().CutGeoByTag(_objectToCut.tag);
+            
             _cutter.GetComponent<Cutter>()._isCut = true;
-            _cutter.GetComponent<Cutter>().ReleaseObj();
-
+            _cutter.GetComponent<Cutter>().ReleaseObj();           
+          
             ResetValues();
            
         }

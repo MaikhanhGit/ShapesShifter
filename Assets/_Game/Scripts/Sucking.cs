@@ -19,9 +19,18 @@ public class Sucking : MonoBehaviour
     private bool _isReleasing = false;
 
 
+    private void Start()
+    {
+        if (_isTopPlatform == true)
+        {
+            _yOffset *= (-1f);
+            _objReleaseForce *= (-1f);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && !_isReset && _isReleasing == false)
+        if (other.gameObject.CompareTag("Player") && !_isReset)
         {          
             _otherObj = other.gameObject;
             _otherRB = other.GetComponent<Rigidbody>();
@@ -47,7 +56,7 @@ public class Sucking : MonoBehaviour
 
     private void FixedUpdate()
     {        
-        if (_otherRB && _isCentered && _isHolding && _isReleasing == false)
+        if (_otherRB && _isCentered && _isHolding)
         {
             _otherRB.transform.Rotate(_rotationVector * _rotationSpeed * Time.fixedDeltaTime);
 
@@ -56,11 +65,7 @@ public class Sucking : MonoBehaviour
 
             _otherObj.transform.position = newPos;
         }
-
-        if (_isReleasing == true)
-        {
-            this.gameObject.GetComponent<BoxCollider>().enabled = false;
-        }
+       
     }
 
     private void OnReleaseObj()
@@ -69,21 +74,11 @@ public class Sucking : MonoBehaviour
         {
             _isHolding = false;
 
-            if (_isTopPlatform == false)
-            {
-                _releaseForce = new Vector3(_objReleaseForce, _objReleaseForce * 2, 0f);
-              
-                ReleaseObj();
-            }
+            _releaseForce = new Vector3(0f, _objReleaseForce * 2, 0f);
 
-            else if (_isTopPlatform == true)
-            {              
-                _releaseForce = new Vector3(1000f, _objReleaseForce * -1, 0f);
-               
-                _isReleasing = true;
-              
-                ReleaseObj();
-            }
+            ReleaseObj();
+
+           
         }
 
     }
@@ -111,9 +106,6 @@ public class Sucking : MonoBehaviour
         _isCentered = false;
         _isHolding = false;
         _otherObj = null;
-        _otherRB = null;
-        _releaseForce = new Vector3(1f, 1f, 1f);
-        _isReleasing = false;
-        this.gameObject.GetComponent<BoxCollider>().enabled = true;
+        _otherRB = null;       
     }
 }
