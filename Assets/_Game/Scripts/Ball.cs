@@ -38,6 +38,7 @@ public class Ball : MonoBehaviour
 
     [Header("Game Play")]
     [SerializeField] public GameObject[] _geos = null;
+    [SerializeField] private GameObject _goldPieces = null;
     public int _currentNumChildren = 0;
     public bool _isPurpleCleared = false;
     private bool _isDragZeroOut = false;
@@ -69,17 +70,15 @@ public class Ball : MonoBehaviour
         }
 
         if (_isGrounded && _isCube)
-        {
-            _jumpForce = _cubeJumpForce;            
-
-            _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);            
+        {                      
+            _rb.AddForce(Vector3.up * _cubeJumpForce, ForceMode.Impulse);            
         }
         
     }
 
     private void Update()
     {
-        if (_currentNumChildren < 2)
+        if (_currentNumChildren < 3)
         {
             _isCube = true;
 
@@ -92,7 +91,7 @@ public class Ball : MonoBehaviour
                 _isDragZeroOut = true;
             }
         }
-        else if (_currentNumChildren >= 2)
+        else if (_currentNumChildren >= 3)
         {
             _isCube = false;
 
@@ -110,7 +109,8 @@ public class Ball : MonoBehaviour
 
         if (_isCube == false)
         {
-            _isGrounded = Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, layerMask);
+            _isGrounded = Physics.Raycast(transform.position, Vector3.down,
+                _groundCheckDistance, layerMask);
 
             if (_isGrounded)
             {
@@ -123,7 +123,8 @@ public class Ball : MonoBehaviour
         }
         else if (_isCube == true)
         {
-            _isGrounded = Physics.Raycast(transform.position, Vector3.down, _cubeGroundCheckDistance, layerMask);
+            _isGrounded = Physics.Raycast(transform.position, Vector3.down, 
+                _cubeGroundCheckDistance, layerMask);
 
             if (_isGrounded)
             {
@@ -265,5 +266,18 @@ public class Ball : MonoBehaviour
         }
     }
 
+    public void EnableGoldPieces()
+    {
+        if (_goldPieces)
+        {
+           _goldPieces.gameObject.SetActive(true);
+            _currentNumChildren += 12;
+        }
+       
+    }
 
+    public bool CheckPurpleStatus()
+    {
+        return _isPurpleCleared;
+    }
 }

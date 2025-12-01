@@ -15,8 +15,7 @@ public class Sucking : MonoBehaviour
     private bool _isCentered = false;
     private bool _isReset = false;
     private bool _isHolding = false;
-    private Vector3 _releaseForce = new Vector3(1f, 1f, 1f);
-    private bool _isReleasing = false;
+    private Vector3 _releaseForce = new Vector3(1f, 1f, 1f);   
 
 
     private void Start()

@@ -8,12 +8,9 @@ public class PurpleCutter : MonoBehaviour
     private bool _isCut = false;
 
 
-    private void Start()
-    {
-        
-    }
+    
     private void OnTriggerEnter(Collider other)
-    {        
+    {       
         if(_isCut == false)
         {            
             string name = other.tag;         

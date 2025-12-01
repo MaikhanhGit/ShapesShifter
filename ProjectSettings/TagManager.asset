@@ -15,6 +15,7 @@ TagManager:
   - Pink
   - Cyan
   - Ground
+  - Gold
   layers:
   - Default
   - TransparentFX
