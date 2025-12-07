@@ -22,6 +22,8 @@ public class Ball : MonoBehaviour
     [SerializeField] float _cubePushForce = 10f;
     [SerializeField] float _cubeRollForce = 10f;
     [SerializeField] float _jumpForce = 3f;
+    [SerializeField] float _jumpVertMul = 2f;
+    [SerializeField] float _cubeJumpVertMul = 5f;
     [SerializeField] float _cubeJumpForce = 10f;
     [SerializeField] float _gravityScale = 1f;
     [SerializeField] float _fallGravityScale = 5f;            
@@ -42,7 +44,8 @@ public class Ball : MonoBehaviour
     public int _currentNumChildren = 0;
     public bool _isPurpleCleared = false;
     private bool _isDragZeroOut = false;
-        
+    private Vector3 _jumpVector = new Vector3(1f, 1f, 1f);
+
 
 
     // Start is called before the first frame update
@@ -64,14 +67,17 @@ public class Ball : MonoBehaviour
 
   void OnJump()
     {
+        Vector3 jumpVector = new Vector3(_movementX, _jumpVertMul, _movementY);
+        Vector3 cubeJumpVector = new Vector3(_movementX, _cubeJumpVertMul, _movementY);
+
         if (_isGrounded && !_isCube)
         {                        
-            _rb.AddForce(Vector3.up *  _jumpForce, ForceMode.Impulse);            
+            _rb.AddForce(jumpVector *  _jumpForce, ForceMode.Impulse);            
         }
 
         if (_isGrounded && _isCube)
         {                      
-            _rb.AddForce(Vector3.up * _cubeJumpForce, ForceMode.Impulse);            
+            _rb.AddForce(cubeJumpVector * _cubeJumpForce, ForceMode.Impulse);            
         }
         
     }

@@ -7,6 +7,8 @@ public class Sucking : MonoBehaviour
 {
     [SerializeField] float _yOffset = 0.2f;
     [SerializeField] float _objReleaseForce = 250f;
+    [SerializeField] float _topPlatformReleaseForce = -1f;
+    [SerializeField] float _topPlatfReleaseHoriMul = -500f;
     [SerializeField] Vector3 _rotationVector = new Vector3 (1f, 1f, 1f);
     [SerializeField] float _rotationSpeed = 1f;
     [SerializeField] bool _isTopPlatform = false;
@@ -15,7 +17,9 @@ public class Sucking : MonoBehaviour
     private bool _isCentered = false;
     private bool _isReset = false;
     private bool _isHolding = false;
-    private Vector3 _releaseForce = new Vector3(1f, 1f, 1f);   
+    private Vector3 _releaseForce = new Vector3(1f, 1f, 1f);
+    private float _movementX;
+    private float _movementY;
 
 
     private void Start()
@@ -23,7 +27,7 @@ public class Sucking : MonoBehaviour
         if (_isTopPlatform == true)
         {
             _yOffset *= (-1f);
-            _objReleaseForce *= (-1f);
+            //_objReleaseForce *= (-1f);
         }
     }
 
@@ -67,13 +71,31 @@ public class Sucking : MonoBehaviour
        
     }
 
+    void OnMove(InputValue movementValue)
+    {
+        Vector2 movementVector = movementValue.Get<Vector2>();
+        _movementX = movementVector.x;
+        _movementY = movementVector.y;
+    }
+
     private void OnReleaseObj()
     {       
         if (_isCentered)
         {
             _isHolding = false;
 
-            _releaseForce = new Vector3(0f, _objReleaseForce * 2, 0f);
+            if (!_isTopPlatform)
+            {
+                _releaseForce = new Vector3(_movementX * _objReleaseForce,
+                _objReleaseForce * 2, _movementY * _objReleaseForce);
+            }
+            else if (_isTopPlatform)
+            {                
+                _releaseForce = new Vector3(_movementX * _topPlatformReleaseForce * _topPlatfReleaseHoriMul,
+               -0.1f, _movementY * _topPlatformReleaseForce * _topPlatfReleaseHoriMul);
+                Debug.Log(_releaseForce);
+            }
+            
 
             ReleaseObj();
 
