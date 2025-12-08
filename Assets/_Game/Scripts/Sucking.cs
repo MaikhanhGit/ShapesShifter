@@ -47,7 +47,7 @@ public class Sucking : MonoBehaviour
     {
         if (!_isCentered)
         {
-            AudioHelper.PlayClip2D(_SFXsucking, 0.3f);
+            AudioHelper.PlayClip2D(_SFXsucking, 0.2f);
 
             _otherRB.isKinematic = true;
             _otherRB.WakeUp();

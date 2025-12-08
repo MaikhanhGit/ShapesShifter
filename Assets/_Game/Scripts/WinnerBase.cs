@@ -39,6 +39,7 @@ public class WinnerBase : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] private AudioClip _SFXFunny = null;
     [SerializeField] private ParticleSystem _particles = null;
+    [SerializeField] private AudioClip _SFXAurora = null;
 
     private void Start()
     {
@@ -82,6 +83,7 @@ public class WinnerBase : MonoBehaviour
             if(_ball._isGoldFramed == true && _ball._currentNumChildren == 26)
             {
                 _particles.Play();
+                AudioHelper.PlayClip2D(_SFXAurora, 1.65f);
             }
             //Reposition Obj
             RepositionObject();
