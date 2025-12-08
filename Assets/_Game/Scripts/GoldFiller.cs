@@ -7,7 +7,9 @@ public class GoldFiller : MonoBehaviour
     [SerializeField] private GameObject _rotatingArt = null;
     [SerializeField] private GameObject _artToDisable = null;
     [SerializeField] Vector3 _rotationVector = new Vector3(1f, 1f, 1f);
+    [SerializeField] AudioClip _SFXGoldFill = null;
     [SerializeField] private float _rotationSpeed = 0.2f;
+    [SerializeField] ParticleSystem _particles = null;
     private bool _isUsed = false;
 
     private void FixedUpdate()
@@ -26,10 +28,13 @@ public class GoldFiller : MonoBehaviour
             Ball player = other.gameObject.GetComponent<Ball>();
             _artToDisable.gameObject.SetActive(false);
 
-            if (player._isPurpleCleared == true && _isUsed == false)
+            if (player._isMetal == true && player._isPurpleCleared == true
+                && player._isGoldFramed == false && _isUsed == false)
             {
                 _isUsed = true;
-                player.EnableGoldPieces();
+                player.EnableGoldFrame();
+                AudioHelper.PlayClip2D(_SFXGoldFill, 1.5f);
+                _particles.Play();
                 
             }
 

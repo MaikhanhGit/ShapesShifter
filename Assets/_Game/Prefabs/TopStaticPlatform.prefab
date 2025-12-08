@@ -76,6 +76,7 @@ MonoBehaviour:
   _rotationVector: {x: 0, y: 90, z: 0}
   _rotationSpeed: 10
   _isTopPlatform: 1
+  _SFXsucking: {fileID: 8300000, guid: 28c1af1d0d61b004db5d1bd39cab86df, type: 3}
 --- !u!114 &5979761767323288202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +239,7 @@ Transform:
   m_GameObject: {fileID: 3130622440449894942}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.077, z: -0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children: []

@@ -32,7 +32,7 @@ public class Cutter : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] private GameObject _virtualCamera = null;
     [SerializeField] private float _focusFOV = 13f;
-    [SerializeField] private float _focusCameraY = 0.5f;
+    [SerializeField] private float _focusCameraY = 0.5f;   
     private float _defaultFOV = 0f;
     private float _defaultCameraOffsetY = 0.0f;
     private float _defaultVerDamp = 0;
@@ -41,6 +41,10 @@ public class Cutter : MonoBehaviour
     private CinemachineTransposer _camTransposer = null;
     private CinemachineComposer _camComposer = null;
 
+    [Header("Audio")]
+    [SerializeField] AudioClip _SFXRotate = null;
+    [SerializeField] AudioClip _SFXrepel = null;
+    [SerializeField] AudioClip _SFXsuck = null;
     private void Start()
     {
        
@@ -93,6 +97,8 @@ public class Cutter : MonoBehaviour
 
     private void RepositionObject()
     {
+        AudioHelper.PlayClip2D(_SFXsuck, 0.2f);
+
         if (_isCut || _isReleased)
         {
             return;
@@ -120,9 +126,7 @@ public class Cutter : MonoBehaviour
     {
         Vector2 movementVector = movementValue.Get<Vector2>();        
         _movementX = movementVector.x;
-        _movementY = movementVector.y;       
-        
-       
+        _movementY = movementVector.y;                      
     }
 
     private void OnRotate(InputValue rotateValue)
@@ -131,6 +135,8 @@ public class Cutter : MonoBehaviour
         {            
             if (_isTurnable)
             {
+                AudioHelper.PlayClip2D(_SFXRotate, 0.3f);
+
                 Vector2 movementVector = rotateValue.Get<Vector2>();
                 _rotateX = movementVector.x;
                 _rotateY = movementVector.y;
@@ -160,10 +166,9 @@ public class Cutter : MonoBehaviour
     {
         //Make sure player can only cut Once
         if(!_isCut)
-        {
+        {           
             for (int i = 0; i < _cutGeo.Length; i++)
-            {
-                Debug.Log("Cutting");
+            {                
                 _cutGeo[i].GetComponent<CutGeo>().Cut();
             }
             
@@ -196,7 +201,9 @@ public class Cutter : MonoBehaviour
     }
 
     public void ReleaseObj()
-    {       
+    {
+        AudioHelper.PlayClip2D(_SFXrepel, 1);
+
         ResetCameraFOV();
         _isReleased = true;        
 
@@ -231,7 +238,7 @@ public class Cutter : MonoBehaviour
                 
                 _otherRB.AddForce(_releaseForce, ForceMode.Impulse);
 
-                DelayHelper.DelayAction(this, DestroyThis, 0.3f);                
+                DelayHelper.DelayAction(this, DestroyThis, 0.5f);                
             }
 
             ResetValues();

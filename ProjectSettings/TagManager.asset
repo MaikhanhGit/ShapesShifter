@@ -16,6 +16,12 @@ TagManager:
   - Cyan
   - Ground
   - Gold
+  - RedMetal
+  - BlueMetal
+  - CyanMetal
+  - GreenMetal
+  - PinkMetal
+  - OrangeMetal
   layers:
   - Default
   - TransparentFX

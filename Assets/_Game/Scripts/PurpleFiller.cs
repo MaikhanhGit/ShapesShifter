@@ -9,6 +9,8 @@ public class PurpleFiller : MonoBehaviour
     [SerializeField] private GameObject _artToDisable = null;
     [SerializeField] Vector3 _rotationVector = new Vector3(1f, 1f, 1f);
     [SerializeField] private float _rotationSpeed = 0.2f;
+    [SerializeField] AudioClip _SFXPurpleFill = null;
+    [SerializeField] ParticleSystem _particles = null;
     private bool _isUsed = false;
    
     private void FixedUpdate()
@@ -27,11 +29,14 @@ public class PurpleFiller : MonoBehaviour
             Ball player = other.gameObject.GetComponent<Ball>();
             _artToDisable.gameObject.SetActive(false);
 
-            if (player._isPurpleCleared == true && _isUsed == false)
+            if (player._isPurpleCleared == true && player._isGoldFramed == false 
+                && _isUsed == false)
             {                
                 _isUsed = true;
                 player.EnableGeoByTag("Purple");
-                player._isPurpleCleared = false;
+                AudioHelper.PlayClip2D(_SFXPurpleFill, 25f);
+                _particles.Play();
+               // player._isPurpleCleared = false;                
             }            
             
         }

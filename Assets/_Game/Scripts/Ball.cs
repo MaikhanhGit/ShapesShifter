@@ -30,6 +30,10 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _originalClampingValue = 3f;
     [SerializeField] private float _cubeClampingValue = 1.5f;
 
+    [Header("Audio")]
+    [SerializeField] AudioClip _SFXballJump = null;
+    [SerializeField] AudioClip _SFXcubeJump = null;                  
+
     [Header("Ground Detection")]
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private float _groundCheckDistance = 1f;
@@ -40,11 +44,15 @@ public class Ball : MonoBehaviour
 
     [Header("Game Play")]
     [SerializeField] public GameObject[] _geos = null;
+    [SerializeField] private GameObject[] _metalGeos = null;
     [SerializeField] private GameObject _goldPieces = null;
     public int _currentNumChildren = 0;
     public bool _isPurpleCleared = false;
     private bool _isDragZeroOut = false;
     private Vector3 _jumpVector = new Vector3(1f, 1f, 1f);
+    public bool _isMetal = false;
+    private int _colorPieceNum = 6;
+    public bool _isGoldFramed = false;   
 
 
 
@@ -54,8 +62,7 @@ public class Ball : MonoBehaviour
         _clampingValue = _originalClampingValue;
         _rb = GetComponent<Rigidbody>();
         _numChildren = gameObject.transform.childCount;       
-        _currentNumChildren = _numChildren;
-        Debug.Log("NumChild: " + _currentNumChildren);
+        _currentNumChildren = _numChildren;       
     }   
 
    void OnMove(InputValue movementValue)
@@ -72,19 +79,31 @@ public class Ball : MonoBehaviour
 
         if (_isGrounded && !_isCube)
         {                        
-            _rb.AddForce(jumpVector *  _jumpForce, ForceMode.Impulse);            
+            _rb.AddForce(jumpVector *  _jumpForce, ForceMode.Impulse);
+            PlayAudio(_SFXballJump, 0.15f);
         }
 
         if (_isGrounded && _isCube)
         {                      
-            _rb.AddForce(cubeJumpVector * _cubeJumpForce, ForceMode.Impulse);            
+            _rb.AddForce(cubeJumpVector * _cubeJumpForce, ForceMode.Impulse);    
+            PlayAudio(_SFXcubeJump, 0.7f);
         }
         
     }
 
     private void Update()
     {
-        if (_currentNumChildren < 3)
+        if(_colorPieceNum <= 0 && _isPurpleCleared == true)
+        {
+            _isMetal = true;           
+        }
+
+        if(_isPurpleCleared == false)
+        {
+            _isMetal = false;
+        }
+
+        if (_currentNumChildren < 9)
         {
             _isCube = true;
 
@@ -231,7 +250,17 @@ public class Ball : MonoBehaviour
             {
                 geo.SetActive(false);
                 _currentNumChildren -= 1;
-                Debug.Log("Current NumChildren: " + _currentNumChildren);
+
+                if(geoTag != "Purple")
+                {                    
+                    _colorPieceNum -= 1;
+                }
+                
+                if(geoTag == "Purple")
+                {
+                    _isPurpleCleared = true;                   
+                }
+                //Debug.Log("Current NumChildren: " + _currentNumChildren);
 
             }
         }
@@ -241,43 +270,54 @@ public class Ball : MonoBehaviour
     {
         bool isCompatible = false;
 
-        for (int i = 0; i < _geos.Length; i++)
+        if(_isMetal == true)
         {
-            GameObject geo = _geos[i];
-            if (geo.CompareTag(geoTag))
-            {
-                if (geo.activeSelf == false)
+            for (int i = 0; i < _metalGeos.Length; i++)
+            {               
+                GameObject geo = _metalGeos[i];
+                if (geo.CompareTag(geoTag))
                 {
-                    geo.SetActive(true);
-                    isCompatible = true;
-                    _currentNumChildren += 1;
-                }            
+                    if (geo.activeSelf == false)
+                    {
+                        geo.SetActive(true);
+                        isCompatible = true;
+                        _currentNumChildren += 1;
+                    }
+                }
             }
+        
         }
         return isCompatible;
         
     }
 
-   public void EnableGeoByTag(string geotag)
+   public void EnableGeoByTag(string geoTag)
     {
         for (int i = 0; i < _geos.Length; i++)
         {
             GameObject geo = _geos[i];
-            if (geo.CompareTag(geotag) == true && geo.activeSelf == false)
+
+            if (geo.CompareTag(geoTag) == true && geo.activeSelf == false)
             {
                 geo.SetActive(true);
                 _currentNumChildren += 1;
-                Debug.Log("Current NumChildren: " +  _currentNumChildren);
+
+                if(geoTag == "Purple")
+                {
+                    _isPurpleCleared = false;                    
+                }
+                //Debug.Log("Current NumChildren: " +  _currentNumChildren);
             }
         }
     }
 
-    public void EnableGoldPieces()
+    public void EnableGoldFrame()
     {
         if (_goldPieces)
         {
            _goldPieces.gameObject.SetActive(true);
             _currentNumChildren += 12;
+            _isGoldFramed = true;
         }
        
     }
@@ -285,5 +325,10 @@ public class Ball : MonoBehaviour
     public bool CheckPurpleStatus()
     {
         return _isPurpleCleared;
+    }
+
+    private void PlayAudio(AudioClip clip, float volume)
+    {
+        AudioHelper.PlayClip2D(clip, volume);
     }
 }

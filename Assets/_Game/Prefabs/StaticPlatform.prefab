@@ -71,9 +71,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _yOffset: 0.2
   _objReleaseForce: 50
+  _topPlatformReleaseForce: -1
+  _topPlatfReleaseHoriMul: -500
   _rotationVector: {x: 0, y: 90, z: 0}
   _rotationSpeed: 10
   _isTopPlatform: 0
+  _SFXsucking: {fileID: 8300000, guid: 28c1af1d0d61b004db5d1bd39cab86df, type: 3}
 --- !u!114 &5396301919427274822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +119,7 @@ GameObject:
   - component: {fileID: 1363830243607247982}
   - component: {fileID: 7977363863746911361}
   - component: {fileID: 8528365725345026648}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ArtBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +239,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6529305851812287427}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000058859578, y: -0, z: -0, w: -1}
+  m_LocalRotation: {x: -0.000008988169, y: 0, z: 0, w: -1}
   m_LocalPosition: {x: 0.00000011920929, y: 2.5336986, z: 3.5}
   m_LocalScale: {x: 1.95, y: 0.2, z: 0.95}
   m_ConstrainProportionsScale: 1

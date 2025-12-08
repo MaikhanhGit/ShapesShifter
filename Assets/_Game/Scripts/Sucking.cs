@@ -12,6 +12,7 @@ public class Sucking : MonoBehaviour
     [SerializeField] Vector3 _rotationVector = new Vector3 (1f, 1f, 1f);
     [SerializeField] float _rotationSpeed = 1f;
     [SerializeField] bool _isTopPlatform = false;
+    [SerializeField] AudioClip _SFXsucking = null;
     private GameObject _otherObj = null;
     private Rigidbody _otherRB = null;
     private bool _isCentered = false;
@@ -46,6 +47,8 @@ public class Sucking : MonoBehaviour
     {
         if (!_isCentered)
         {
+            AudioHelper.PlayClip2D(_SFXsucking, 0.3f);
+
             _otherRB.isKinematic = true;
             _otherRB.WakeUp();
             
